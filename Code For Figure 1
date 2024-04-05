@@ -1,0 +1,31 @@
+import random
+
+collision_number=1000
+
+class collisions_class:
+    def __init__(x, species):
+        x.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:  
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulation(x):
+    particles = [collisions_class('A') for _ in range(x[0])] + \
+                [collisions_class('B') for _ in range(x[1])] + \
+                [collisions_class('C') for _ in range(x[2])]
+
+    for _ in range(collision_number):
+        particle1, particle2 = random.sample(particles, 2)
+        collision(particle1, particle2)
+
+    final = {species: sum(1 for k in particles if k.species == species) for species in ['A', 'B', 'C']}
+    return final
+
+input1 = [int(input("Enter number of particles for species " + species + ": ")) for species in ['A', 'B', 'C']]
+
+final1 = simulation(input1)
+print("Final Number of Each Particle Type:", final1)
