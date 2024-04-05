@@ -1,0 +1,41 @@
+import random
+
+class collisions_class:
+    def __init__(x, species):
+        x.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:  
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulate(x1, x2):
+    particles = [collisions_class('A') for _ in range(x1[0])] + \
+                [collisions_class('B') for _ in range(x1[1])] + \
+                [collisions_class('C') for _ in range(x1[2])]
+
+    for _ in range(x2):
+        p1, p2 = random.sample(particles, 2)
+        collision(p1, p2)
+
+    final = {species: sum(1 for k in particles if k.species == species) for species in ['A', 'B', 'C']}
+    return final
+
+input1 = [int(input("Number of particles for species " + species + ": ")) for species in ['A', 'B', 'C']]
+N = sum(input1)
+
+input2 = int(input("Number of collisions: "))
+
+sim_number = int(input("Number of Simulations: "))
+
+y = 0
+
+for _ in range(sim_number):
+    final1 = simulate(input1, input2)
+    
+    if N in final1.values():
+        y += 1
+
+print(f"Number of systems with {N} particles of one species:", y)
