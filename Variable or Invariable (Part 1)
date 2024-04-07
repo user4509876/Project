@@ -1,0 +1,33 @@
+import random
+from itertools import combinations_with_replacement
+
+class collisions_class:
+    def __init__(x, species):
+        x.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulate(numA, numB, x):
+    for n in range(x):
+        particles = [collisions_class('A') for _ in range(numA)] + \
+                    [collisions_class('B') for _ in range(numB)] + \
+                    [collisions_class('C') for _ in range(0)]
+
+        for _ in range(250000):
+            p1, p2 = random.sample(particles, 2)
+            collision(p1, p2)
+
+        final = {species: sum(1 for p in particles if p.species == species) for species in ['A', 'B', 'C']}
+        print(f"Simulation {n+1} - Final Distribution: {final}")
+
+y = combinations_with_replacement(range(1, 7), 2)
+
+for idx, (numA, numB) in enumerate(y):
+    print(f"Combination {idx+1}: A={numA}, B={numB}, C=0")
+    simulate(numA, numB, 10)
+    print()
