@@ -1,0 +1,48 @@
+import random
+import matplotlib.pyplot as plt
+
+class collisions_class:
+    def __init__(x, species):
+        x.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:  
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulate(x):
+    particles = [collisions_class('A') for _ in range(x[0])] + \
+                [collisions_class('B') for _ in range(x[1])] + \
+                [collisions_class('C') for _ in range(x[2])]
+
+    count = 0
+    while len(set(p.species for p in particles)) > 1:
+        p1, p2 = random.sample(particles, 2)
+        collision(p1, p2)
+        count += 1
+
+    return count
+
+range_val = range(2, 9)
+list1 = []
+
+for n in range_val:
+    x = [n, n, n]
+    total = 0
+    y = 10  
+
+    for _ in range(y):
+        total += simulate(x)
+    average = total / y
+    list1.append(average)
+
+plt.plot(range_val, list1, marker='o')
+plt.yscale('log') 
+plt.title('Number of Collisions To Reach a Consistent System')
+plt.xlabel('Initial No of Particles for Each Species')
+plt.ylabel('Average No of Collisions on Log Scale')
+plt.xticks(range_val)
+plt.grid(True)
+plt.show()
