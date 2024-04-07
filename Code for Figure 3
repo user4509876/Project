@@ -1,0 +1,46 @@
+import random
+import matplotlib.pyplot as plt
+
+class collisions_class:
+    def __init__(self, species):
+        self.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:  
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulate(x):
+    particles = [collisions_class('A') for _ in range(x[0])] + \
+                [collisions_class('B') for _ in range(x[1])] + \
+                [collisions_class('C') for _ in range(x[2])]
+
+    x = 0
+    while len(set(p.species for p in particles)) > 1:
+        p1, p2 = random.sample(particles, 2)
+        collision(p1, p2)
+        x += 1
+
+    return x
+
+range_val = range(2, 9)
+list1 = []
+
+for n in range_val:
+    x = [n, n, n]
+    total = 0
+    y = 10
+
+    for _ in range(y):
+        total += simulate(x)
+    average = total / y
+    list1.append(average)
+
+plt.plot(range_val, list1, marker='o')
+plt.title('Number of Collisions vs Initial Number of Particles')
+plt.xlabel('Initial Number of Particles for Each Species')
+plt.ylabel('Number of Collisions')
+plt.grid(True)
+plt.show()
