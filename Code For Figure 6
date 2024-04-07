@@ -1,0 +1,36 @@
+import random
+
+class collisions_class:
+    def __init__(x, species):
+        x.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:  
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulate(numA, numB, numC, x, y):
+    count = 0
+    for n in range(x):
+        particles = [collisions_class('A') for _ in range(numA)] + \
+                    [collisions_class('B') for _ in range(numB)] + \
+                    [collisions_class('C') for _ in range(numC)]
+
+        for _ in range(y):
+            p1, p2 = random.sample(particles, 2)
+            collision(p1, p2)
+
+        set1 = set(p.species for p in particles)
+        if len(set1) == 1:
+            count += 1
+    
+    if count == 0:
+        print(f"A={numA}, B={numB}, C={numC}, Number of Consistent simulations:", count)
+
+for x in range(1, 7):
+    for y in range(1, 7):
+        for z in range(1, 7):
+            if x <= y <= z:
+                simulate(x, y, z, 3, 250000)
