@@ -1,0 +1,39 @@
+import random
+
+class collisions_class:
+    def __init__(x, species):
+        x.species = species
+
+def collision(p1, p2):
+    if p1.species != p2.species:  
+        species = ['A', 'B', 'C']
+        p3 = [s for s in species if s not in [p1.species, p2.species]][0]
+        p1.species = p3
+        p2.species = p3
+
+def simulate(numA, numB, x, y):
+    count = 0
+    for sim in range(x):
+        particles = [collisions_class('A') for _ in range(numA)] + \
+                    [collisions_class('B') for _ in range(numB)] + \
+                    [collisions_class('C') for _ in range(0)]
+
+        for _ in range(y):
+            p1, p2 = random.sample(particles, 2)
+            collision(p1, p2)
+
+        set1 = set(p.species for p in particles)
+        if len(set1) == 1:
+            count += 1
+    print(f"A = {numA}, Number of consistent simulations:", count)
+
+#These are the variables I change to produce the table
+numB = 1
+numC = 0
+
+# Varying A
+for k in range(1, 12):
+    #Number of simulations,x
+    x = 50
+    y = int(input("Enter number of collisions per simulation: "))
+    simulate(k, numB, x, y)
